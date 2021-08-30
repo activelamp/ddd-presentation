@@ -4,20 +4,162 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>DDD Architecture</title>
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+		<link rel="stylesheet" href="dist/theme/sky.css">
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/monokai.css">
+		<style>
+			.twocolumn {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				grid-gap: 10px;
+				text-align: left;
+			}
+			.text-center {
+				text-align: center;
+			}
+		</style>
 	</head>
 	<body>
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
+				<section><h2>Domain Driven Design (DDD)</h2></section>
+				<section>
+					<h3>Domain Driven Design (DDD)</h3>
+					<div>
+						<p>Two aspects:</p>
+						<ul>
+							<li>Decomposing the Application</li>
+							<li>Layered Architecture</li>
+						</ul>
+					</div>
+					<br />
+					<br />
+					<p class="fragment">Today we're talking about Layered architecture</p>
+				</section>
+				<section>
+					<h2>Decomposing the Application</h2>
+					<p>Talk about after the demo if time.</p>
+				</section>
+				<section>
+					<section><h3>DDD - Layered Architecture</h3></section>
+					<section>
+						<p>Each layer communicates with immediate adjacent layer, all dependencies flow inward.</p>
+						<img src="./img/onion-architecture.png">
+					</section>
+					<section>
+						<h3>Lots of names for this</h3>
+						<ul>
+							<li>Clean Architecture</li>
+							<li>Onion Architecture</li>
+							<li>Hexagonal Architecture</li>
+							<li>Ports and Adapters</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Why?</h2>
+						<ul>
+							<li>Follows SOLID principles</li>
+							<li>Single Responsibility Classes at each layer</li>
+							<li>Easier to test classes (smaller units to test)</li>
+							<li>Domain knows nothing about implementation details (i.e. Database)</li>
+							<li>Swappable outer layers (i.e. database) without changing inner layers (i.e. usecases and domain objects).</li>
+						</ul>
+					</section>
+					<section>
+						<img src="img/cone.jpeg">
+					</section>
+				</section>
+				<section>
+					<section>
+						<h2>How?</h2>
+						<p>Every service will implement these directories</p>
+						<img src="img/top-level-directories.png" />
+					</section>
+					<section>
+						<p>Data - holds all classes pertaining to data access, transformation, transfer, etc...</p>
+						<img src="img/data-folder.png" />
+					</section>
+					<section>
+						<p>Usecases - holds all classes pertaining to a single use case, Controller, Usecase, Subscriber</p>
+						<img src="img/usecases.png" />
+					</section>
+					<section>
+						<p>Domain - holds Entities, Value Objects, Respository Interface (not impl of repo)</p>
+						<img src="img/domain-folder.png" />
+					</section>
+					<section>
+						<h2>Entities and Value Objects</h2>
+						<ul>
+							<li>All business invariants are encapsulated in Domain Objects</li>
+							<li>Validation is next to the data it represents</li>
+							<li>DTO's should be converted to Domain Objects coming into Use Case</li>
+							<li>Domain Objects should be converted to DTO's going out of Use Case</li>
+						</ul>
+					</section>
+					<section>
+						<h2>Use Cases should always work with Domain Objects</h2>
+						<small>So that invariants are enforced</small>
+					</section>
+				</section>
+				<section><h2>Demo</h2></section>
+				<section>
+					<section>
+						<h3>DDD - Bounded Contexts</h3>
+						<ul>
+							<li>Typically map to independent microservices</li>
+						</ul>
+					</section>
+					<section>
+						<h3>Example - Decomposing LNG</h3>
+						<ul>
+							<li>CMS</li>
+							<li>Metrics</li>
+							<li>Document Storage</li>
+							<li>Page Builder</li>
+							<li>etc...</li>
+						</ul>
+						<p class="fragment">This is up for debate, this is technical decomposition not business decomposition</p>
+					</section>
+					<section>
+						<h3>Domains should be decomposed by business process</h3>
+						<ul>
+							<li>Look at the business process</li>
+							<li>Look at specific use cases of the process.</li>
+							<li>Derive the subdomains around business units/groups</li>
+							<li>or, Derive the subdomains around core entity of the business unit</li>
+						</ul>
+					</section>
+					<section>
+						<h3>Example - Business Process</h3>
+						<ol>
+							<li>Knowledge Worker submits content to LH</li>
+							<li>Content Moderator reviews content and requests changes or approves for publishing</li>
+							<li>Subject Matter Experts curate content around particular topics into single space</li>
+							<li>Knowledge Seeker can view curated content around specific subject</li>
+							<li>Knowledge Seeker can use full text search to find content</li>
+						</ol>
+					</section>
+					<section>
+						<h3>Example - Business Process Domains</h3>
+						<ol>
+							<li>CMS Subdomain - Knowledge Worker submits content</li>
+							<li>Moderation Subdomain - Content Moderator reviews content</li>
+							<li>Spaces Subomain - Subject Matter Experts curates content into space</li>
+							<li>Spaces Subomain - Knowledge Seeker can view curated content for specific subject</li>
+							<li>Search Subdomain - Knowledge Seeker can (cognitive) search to find content</li>
+						</ol>
+					</section>
+					<section>
+						<h3>We should work with a business analyst</h3>
+						<small>(business process was contrived for illustration)</small>
+					</section>
+				</section>
+				<section><h3>Questions?</h3></section>
 			</div>
 		</div>
 
